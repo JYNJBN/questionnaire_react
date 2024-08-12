@@ -1,7 +1,8 @@
 import { useSafeState } from 'ahooks'
-import React from 'react'
+import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
-import QuestionCard from '../components/QuestionCard'
+import QuestionCard from '../../components/QuestionCard'
+import { Typography } from 'antd'
 const questionListArr = [
   {
     _id: 1,
@@ -14,7 +15,7 @@ const questionListArr = [
   {
     _id: 2,
     title: '123',
-    isPublished: true,
+    isPublished: false,
     isStart: true,
     answerCount: 1,
     createdAt: '2022-01-01',
@@ -23,17 +24,21 @@ const questionListArr = [
     _id: 3,
     title: '123',
     isPublished: true,
-    isStart: true,
+    isStart: false,
     answerCount: 1,
     createdAt: '2022-01-01',
   },
 ]
 export default function List() {
-  const [questionList, setQuestionList] = useSafeState(questionListArr)
+  const [questionList, setQuestionList] = useState(questionListArr)
+  const { Title } = Typography
   return (
     <div>
       <div className={listStyle.header}>
-        <div className={listStyle.left}>我的问卷</div>
+        <Title level={3} className={listStyle.left}>
+          我的问卷
+        </Title>
+
         <input type="text" className={listStyle.right} />
       </div>
       <div className={listStyle.content}>
@@ -42,7 +47,7 @@ export default function List() {
             return <QuestionCard key={q._id} {...q}></QuestionCard>
           })}
       </div>
-      <div className={listStyle.footer}>footer</div>
+      <div className={listStyle.footer}>加载更多....</div>
     </div>
   )
 }
