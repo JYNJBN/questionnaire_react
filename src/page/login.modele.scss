@@ -1,0 +1,10 @@
+.container{
+  height: calc(100vh - 64px - 68px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-image: #fff;
+
+}

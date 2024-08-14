@@ -1,9 +1,10 @@
 import { Button, Typography } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './home.module.scss'
 export default function Home() {
   const nav = useNavigate()
+
   const { Title, Paragraph } = Typography
   return (
     <div className={styles.container}>

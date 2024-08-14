@@ -11,7 +11,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
-import { QUESTION_EDIT_URL, QUESTION_STAT_URL } from '../utils/constant'
+import { QUESTION_EDIT_URL, QUESTION_STAT_URL } from '../constant/routerConstant'
 import { is } from 'immer/dist/internal'
 // ts 自定义类型
 type PropsType = {

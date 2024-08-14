@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import { Typography } from 'antd'
+import ListSearch from '../../components/ListSearch'
 const questionListArr = [
   {
     _id: 1,
@@ -39,7 +40,9 @@ export default function List() {
           我的问卷
         </Title>
 
-        <input type="text" className={listStyle.right} />
+        <div className={listStyle.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={listStyle.content}>
         {questionList.length > 0 &&

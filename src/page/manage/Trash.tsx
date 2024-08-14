@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
 import { Typography, Empty, Table, Tag, Space, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import ListSearch from '../../components/ListSearch'
 const questionListArr = [
   {
     _id: 1,
@@ -98,7 +99,7 @@ export default function Trash() {
         <Title level={3} className={listStyle.left}>
           回收站
         </Title>
-        <input type="text" className={listStyle.right} defaultValue={JSON.stringify(selectedIds)} />
+        <ListSearch />
       </div>
       <div className={listStyle.content}>
         {questionList.length === 0 && <Empty description="暂无数据" />}

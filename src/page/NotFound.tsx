@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Result } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MANAGE_LIST_URL } from '../utils/constant'
+import { MANAGE_LIST_URL } from '../constant/routerConstant'
 export default function NotFound() {
   const nav = useNavigate()
   return (

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
 import { Typography, Empty } from 'antd'
 import QuestionCard from '../../components/QuestionCard'
+import ListSearch from '../../components/ListSearch'
 
 const questionListArr = [
   {
@@ -39,7 +40,9 @@ export default function Start() {
         <Title level={3} className={listStyle.left}>
           星标问卷
         </Title>
-        <input type="text" className={listStyle.right} />
+        <div className={listStyle.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={listStyle.content}>
         {questionList.length === 0 && <Empty description="暂无数据" />}
