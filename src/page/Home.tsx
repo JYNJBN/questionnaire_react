@@ -2,9 +2,12 @@ import { Button, Typography } from 'antd'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './home.module.scss'
+import axios from 'axios'
 export default function Home() {
   const nav = useNavigate()
-
+  useEffect(() => {
+    axios.get('/api/test')
+  }, [])
   const { Title, Paragraph } = Typography
   return (
     <div className={styles.container}>
