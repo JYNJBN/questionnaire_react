@@ -1,13 +1,30 @@
 import React from 'react'
-import { Typography, Space, Form, Input, Button } from 'antd'
+import { Typography, Space, Form, Input, Button, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import styles from './register.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LOGIN_URL } from '../constant/routerConstant'
+import { useRequest } from 'ahooks'
+import { registerApi } from '../services/user'
 export default function Register() {
   const { Title } = Typography
+  const nav = useNavigate()
+
+  const { run } = useRequest(
+    async values => {
+      const { username, password, nickname } = values
+      await registerApi(username, password, nickname)
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('注册成功')
+        nav(LOGIN_URL) // 跳转到登录页
+      },
+    }
+  )
   const onFinish = (values: any) => {
-    console.log('Success:', values)
+    run(values) // 调用 ajax
   }
   return (
     <div className={styles.container}>

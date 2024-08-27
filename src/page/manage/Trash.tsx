@@ -1,39 +1,45 @@
 import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
-import { Typography, Empty, Table, Tag, Space, Button, Modal } from 'antd'
+import { Typography, Empty, Table, Tag, Space, Button, Modal, Spin, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch'
-const questionListArr = [
-  {
-    _id: 1,
-    title: '123',
-    isPublished: true,
-    isStart: true,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-  {
-    _id: 2,
-    title: '123',
-    isPublished: false,
-    isStart: true,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-  {
-    _id: 3,
-    title: '123',
-    isPublished: true,
-    isStart: false,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-]
+import { useLoadingQuestionList } from '../../hooks/useLoadQuetionList'
+import { deleteQuestionsApi, updateQuestionApi } from '../../services/question'
+import { useRequest } from 'ahooks'
 
 export default function Trash() {
-  const [questionList, setQuestionList] = useState(questionListArr)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const { Title } = Typography
+  const { data = {}, loading, refresh } = useLoadingQuestionList({ isDeleted: true })
+  const { list = [], total = 0 } = data
+
+  // 恢复
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionApi(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, // 防抖
+      onSuccess() {
+        message.success('恢复成功')
+        refresh() // 手动刷新列表
+        setSelectedIds([])
+      },
+    }
+  )
+
+  // 删除
+  const { run: deleteQuestion } = useRequest(async () => await deleteQuestionsApi(selectedIds), {
+    manual: true,
+    onSuccess() {
+      message.success('删除成功')
+      refresh()
+      setSelectedIds([])
+    },
+  })
   const tableColumns = [
     {
       title: '标题',
@@ -65,7 +71,7 @@ export default function Trash() {
       icon: <ExclamationCircleOutlined />,
       content: '删除以后无法找回！',
       onOk: () => {
-        alert(`删除${JSON.stringify(selectedIds)}`)
+        deleteQuestion()
       },
     })
   }
@@ -73,17 +79,19 @@ export default function Trash() {
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button disabled={selectedIds.length === 0}>恢复</Button>
-          <Button disabled={selectedIds.length === 0} onClick={del}>
+          <Button disabled={selectedIds.length === 0} onClick={recover}>
+            恢复
+          </Button>
+          <Button danger disabled={selectedIds.length === 0} onClick={del}>
             彻底删除
           </Button>
         </Space>
       </div>
       <Table
-        dataSource={questionList}
+        dataSource={list}
         columns={tableColumns}
         pagination={false}
-        rowKey={q => q._id}
+        rowKey={(q: any) => q._id}
         rowSelection={{
           type: 'checkbox',
           onChange: rowKey => {
@@ -102,8 +110,9 @@ export default function Trash() {
         <ListSearch />
       </div>
       <div className={listStyle.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 && TableElem}
+        <div style={{ textAlign: 'center' }}>{loading && <Spin size="large" />}</div>
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {!loading && list.length > 0 && TableElem}
       </div>
       <div className={listStyle.footer}>分页</div>
     </>

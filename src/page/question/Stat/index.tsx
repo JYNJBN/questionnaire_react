@@ -1,5 +1,4 @@
 import React from 'react'
-
-export default function Stat() {
-  return <div>Stat</div>
+export default function Edit() {
+  return <div></div>
 }

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './home.module.scss'
 import axios from 'axios'
+import { MANAGE_LIST_URL } from '../constant/routerConstant'
 export default function Home() {
   const nav = useNavigate()
   useEffect(() => {
@@ -18,7 +19,14 @@ export default function Home() {
           <br />
           已累计创建100份问卷调查，累计收集900份问卷调查。
         </Paragraph>
-        <Button type="primary">开始使用</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            nav(MANAGE_LIST_URL)
+          }}
+        >
+          开始使用
+        </Button>
       </div>
     </div>
   )

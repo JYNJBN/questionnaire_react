@@ -1,6 +1,6 @@
 const LOGIN_URL = '/login'
 const REGISTER_URL = '/register'
-const HOME_URL = '/home'
+const HOME_URL = '/'
 const MANAGE_LIST_URL = '/manage/list'
 const MANAGE_TRASH_URL = '/manage/trash'
 const MANAGE_START_URL = '/manage/start'

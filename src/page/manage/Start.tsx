@@ -1,39 +1,15 @@
 import React, { useState } from 'react'
 import listStyle from './comment.module.scss'
-import { Typography, Empty } from 'antd'
+import { Typography, Empty, Spin } from 'antd'
 import QuestionCard from '../../components/QuestionCard'
 import ListSearch from '../../components/ListSearch'
+import { useLoadingQuestionList } from '../../hooks/useLoadQuetionList'
+import ListPage from '../../components/ListPage'
 
-const questionListArr = [
-  {
-    _id: 1,
-    title: '123',
-    isPublished: true,
-    isStart: true,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-  {
-    _id: 2,
-    title: '123',
-    isPublished: false,
-    isStart: true,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-  {
-    _id: 3,
-    title: '123',
-    isPublished: true,
-    isStart: false,
-    answerCount: 1,
-    createdAt: '2022-01-01',
-  },
-]
 export default function Start() {
-  const [questionList, setQuestionList] = useState(questionListArr)
   const { Title } = Typography
-
+  const { data = {}, loading } = useLoadingQuestionList({ isStart: true })
+  const { list = [], total = 0 } = data
   return (
     <>
       <div className={listStyle.header}>
@@ -45,13 +21,17 @@ export default function Start() {
         </div>
       </div>
       <div className={listStyle.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 &&
-          questionList.map(q => {
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        <div style={{ textAlign: 'center' }}>{loading && <Spin size="large" />}</div>
+        {!loading &&
+          list.length > 0 &&
+          list.map((q: any) => {
             return <QuestionCard key={q._id} {...q}></QuestionCard>
           })}
       </div>
-      <div className={listStyle.footer}>分页</div>
+      <div className={listStyle.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }

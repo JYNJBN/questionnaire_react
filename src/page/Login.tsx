@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Typography, Space, Form, Input, Button, Checkbox } from 'antd'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { Link } from 'react-router-dom'
 import styles from './register.module.scss'
 import { UserAddOutlined } from '@ant-design/icons'
-import { REGISTER_URL } from '../constant/routerConstant'
+import { MANAGE_LIST_URL, REGISTER_URL } from '../constant/routerConstant'
+import { useRequest } from 'ahooks'
+import { loginApi } from '../services/user'
+import { setToken } from '../utils/user-token'
+
 export default function Login() {
+  const nav = useNavigate()
   const [form] = Form.useForm()
   useEffect(() => {
     const { username, password } = getUserFromStorage()
@@ -29,9 +34,27 @@ export default function Login() {
       password: localStorage.getItem(PASSWORD_KEY),
     }
   }
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginApi(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = '' } = result
+        setToken(token) // 存储 token
+        message.success('登录成功')
+        nav(MANAGE_LIST_URL) // 导航到“我的问卷”
+      },
+    }
+  )
+
   const onFinish = (values: any) => {
     const { username, password, remember } = values
-    console.log('Success:', values)
+    console.log(values)
+
+    run(username, password) // 执行 ajax
     if (remember) {
       rememberUser(username, password)
     } else {

@@ -1,8 +1,8 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import classnames from 'classnames'
 // import './QuestionCard.css'
 import styles from './QuestionCard.module.scss'
-import { Button, Space, Divider, Tag } from 'antd'
+import { Button, Space, Divider, Tag, message } from 'antd'
 import {
   EditOutlined,
   LineChartOutlined,
@@ -12,7 +12,8 @@ import {
 } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { QUESTION_EDIT_URL, QUESTION_STAT_URL } from '../constant/routerConstant'
-import { is } from 'immer/dist/internal'
+import { useRequest } from 'ahooks'
+import { duplicateQuestionApi, updateQuestionApi } from '../services/question'
 // ts 自定义类型
 type PropsType = {
   _id: string | number
@@ -26,7 +27,43 @@ type PropsType = {
 // FC - functional component
 const QuestionCard: FC<PropsType> = props => {
   const { _id, title, createdAt, answerCount, isPublished, isStart } = props
+  // 这里使用isStartState来控制是否标星 是因为后端使用的是mock数据，更新后再请求列表的话数据会变
+  const [isStarState, setIsStarState] = useState(isStart)
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
+    async () => {
+      await updateQuestionApi(_id as string, { isStart: !isStarState })
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState)
+      },
+    }
+  )
+  const { loading: duplicateLoading, run: duplicate } = useRequest(
+    async () => await duplicateQuestionApi(_id as string),
+    {
+      manual: true,
+      onSuccess(result: any) {
+        nav(`/question/edit/${result.id}`)
+      },
+    }
+  )
+  const [isDeletedState, setIsDeletedState] = useState(false)
+  const { loading: deleteLoading, run: deleteQuestion } = useRequest(
+    async () => await updateQuestionApi(_id as string, { isDeleted: true }),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        setIsDeletedState(true)
+      },
+    }
+  )
   const nav = useNavigate()
+
+  // 已经删除的问卷，不要再渲染卡片了
+  if (isDeletedState) return null
   return (
     <>
       <div className={styles.container}>
@@ -34,7 +71,7 @@ const QuestionCard: FC<PropsType> = props => {
           <div className={styles.left}>
             <Link to={isPublished ? `${QUESTION_EDIT_URL}${_id}` : `${QUESTION_STAT_URL}${_id}`}>
               <Space>
-                {isStart && <StarOutlined style={{ color: 'red ' }} />}
+                {isStarState && <StarOutlined style={{ color: 'red ' }} />}
                 {title}
               </Space>
             </Link>
@@ -74,15 +111,27 @@ const QuestionCard: FC<PropsType> = props => {
               </Button>
             </Space>
           </div>
-          <div className={styles.right}>
+          <div className={styles.right} onClick={changeStar}>
             <Space>
-              <Button icon={<StarOutlined />} type="text" size="small">
-                {isStart ? '取消标星' : '标星'}
+              <Button icon={<StarOutlined />} type="text" size="small" loading={changeStarLoading}>
+                {isStarState ? '取消标星' : '标星'}
               </Button>
-              <Button icon={<CopyOutlined />} type="text" size="small">
+              <Button
+                icon={<CopyOutlined />}
+                type="text"
+                size="small"
+                onClick={duplicate}
+                loading={duplicateLoading}
+              >
                 复制
               </Button>
-              <Button icon={<DeleteOutlined />} type="text" size="small">
+              <Button
+                icon={<DeleteOutlined />}
+                type="text"
+                size="small"
+                onClick={deleteQuestion}
+                loading={deleteLoading}
+              >
                 删除
               </Button>
             </Space>
