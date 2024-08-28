@@ -16,9 +16,9 @@ export const ComponentProp = () => {
   }
   const { selectedComponent } = getComponentInfo()
   if (selectedComponent == null) return <NoProp />
-  const { type, props, fe_id } = selectedComponent
+  const { type, props, fe_id, isLocked } = selectedComponent
   const componentConf = getComponentConfByType(type)
   if (componentConf == null) return <NoProp />
   const { PropComponent } = componentConf
-  return <PropComponent {...props} onChange={onChange} />
+  return <PropComponent {...props} onChange={onChange} disable={isLocked} />
 }

@@ -6,9 +6,11 @@
         "ahooks",
         "antd",
         "craco",
+        "downarrow",
         "Elems",
         "Formik",
         "immer",
-        "mockjs"
+        "mockjs",
+        "uparrow"
     ]
 }

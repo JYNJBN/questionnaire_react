@@ -3,7 +3,7 @@ import { QuestionTitlePropsType } from './Interface'
 import { Checkbox, Form, Input, Select } from 'antd'
 
 export const PropComponent: FC<QuestionTitlePropsType> = props => {
-  const { text, isCenter, level, onChange } = props
+  const { text, isCenter, level, onChange, disable } = props
   const [form] = Form.useForm()
   function handleValueChange() {
     if (onChange) {
@@ -20,6 +20,7 @@ export const PropComponent: FC<QuestionTitlePropsType> = props => {
 
   return (
     <Form
+      disabled={disable}
       layout="vertical"
       form={form}
       initialValues={{ text, isCenter, level }}

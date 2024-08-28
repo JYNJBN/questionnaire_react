@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react'
 import { QuestionInputPropsType } from './Interface'
 
 export const PropComponent: FC<QuestionInputPropsType> = props => {
-  const { title, placeholder, onChange } = props
+  const { title, placeholder, onChange, disable } = props
   const [form] = Form.useForm()
   // 监听表单变化，同步到props
   useEffect(() => {
@@ -16,6 +16,7 @@ export const PropComponent: FC<QuestionInputPropsType> = props => {
   }
   return (
     <Form
+      disabled={disable}
       layout="vertical"
       form={form}
       initialValues={{ title, placeholder }}

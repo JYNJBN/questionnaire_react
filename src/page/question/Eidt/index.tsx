@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setCurrentSelectedId } from '../../../store/componentsReducer'
 import { LeftPanel } from './LeftPanel'
 import { RightPanel } from './RightPanel'
+import { EditHeader } from './EditHeader'
 
 export default function Edit() {
   const { loading } = useLoadingQuestionData()
@@ -16,7 +17,9 @@ export default function Edit() {
   }
   return (
     <div className={styles.container}>
-      <div style={{ backgroundColor: 'black' }}>Header</div>
+      <div style={{ backgroundColor: 'black' }}>
+        <EditHeader />
+      </div>
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>
@@ -29,7 +32,7 @@ export default function Edit() {
             }}
           >
             <div className={styles['canvas-wrapper']}>
-              <div style={{ height: '800px' }}>
+              <div>
                 <EditCanvas loading={loading} />
               </div>
             </div>

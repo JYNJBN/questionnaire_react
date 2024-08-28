@@ -6,6 +6,7 @@ import { getComponentConfByType } from '../../../components/QuestionComponents'
 import { ComponentInfoType, setCurrentSelectedId } from '../../../store/componentsReducer'
 import { useDispatch } from 'react-redux'
 import classNames from 'classnames'
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
 
 function getComponent(componentInfo: ComponentInfoType) {
   const { type, props } = componentInfo
@@ -18,6 +19,7 @@ function getComponent(componentInfo: ComponentInfoType) {
 export const EditCanvas: FC<{ loading: boolean }> = props => {
   const { componentList, currentSelectedId } = getComponentInfo()
   const dispatch = useDispatch()
+  useBindCanvasKeyPress()
   function setSelectId(e: MouseEvent, fe_id: string) {
     e.stopPropagation()
     dispatch(setCurrentSelectedId(fe_id))
@@ -32,26 +34,30 @@ export const EditCanvas: FC<{ loading: boolean }> = props => {
   }
   return (
     <div className={styles.canvas}>
-      {componentList.map(c => {
-        const { fe_id } = c
-        const selectedClassName = styles.selected
-        const wrapperDefaultClassName = styles['component-wrapper']
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectedClassName]: fe_id === currentSelectedId,
-        })
-        return (
-          <div
-            key={fe_id}
-            className={wrapperClassName}
-            onClick={e => {
-              setSelectId(e, fe_id)
-            }}
-          >
-            <div className={styles['component']}>{getComponent(c)}</div>
-          </div>
-        )
-      })}
+      {componentList
+        .filter(c => c.isHidden != true)
+        .map(c => {
+          const { fe_id, isLocked } = c
+          const selectedClassName = styles.selected
+          const wrapperDefaultClassName = styles['component-wrapper']
+          const lockedClassName = styles.locked
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectedClassName]: fe_id === currentSelectedId,
+            [lockedClassName]: isLocked,
+          })
+          return (
+            <div
+              key={fe_id}
+              className={wrapperClassName}
+              onClick={e => {
+                setSelectId(e, fe_id)
+              }}
+            >
+              <div className={styles['component']}>{getComponent(c)}</div>
+            </div>
+          )
+        })}
     </div>
   )
 }

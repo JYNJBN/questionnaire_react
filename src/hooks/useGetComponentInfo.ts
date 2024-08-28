@@ -9,8 +9,8 @@ function getComponentInfo() {
   const selectedComponent = components.componentList.find(
     c => c.fe_id === components.currentSelectedId
   )
-  const { componentList = [], currentSelectedId } = components
-  return { componentList, currentSelectedId, selectedComponent }
+  const { componentList = [], currentSelectedId, copyComponent } = components
+  return { componentList, currentSelectedId, selectedComponent, copyComponent }
 }
 
 export default getComponentInfo

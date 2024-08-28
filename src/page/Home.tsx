@@ -7,7 +7,7 @@ import { MANAGE_LIST_URL } from '../constant/routerConstant'
 export default function Home() {
   const nav = useNavigate()
   useEffect(() => {
-    axios.get('/api/test')
+    // axios.get('/api/test')
   }, [])
   const { Title, Paragraph } = Typography
   return (

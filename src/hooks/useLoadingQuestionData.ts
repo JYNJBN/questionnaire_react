@@ -24,7 +24,13 @@ function useLoadingQuestionData() {
     if (!data) return
     const { title, componentList = [] } = data as any
     // 默认选中第一项
-    dispatch(resetComponents({ componentList, currentSelectedId: componentList[0].fe_id }))
+    dispatch(
+      resetComponents({
+        componentList,
+        currentSelectedId: componentList[0].fe_id,
+        copyComponent: null,
+      })
+    )
   }, [data])
   useEffect(() => {
     run(id)
