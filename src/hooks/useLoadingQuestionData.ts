@@ -4,6 +4,7 @@ import { getQuestionServiceApi } from '../services/question'
 import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/componentsReducer'
+import { resetPageInfo } from '../store/pageInfoReducer'
 function useLoadingQuestionData() {
   const { id = '' } = useParams()
   const dispatch = useDispatch()
@@ -22,7 +23,7 @@ function useLoadingQuestionData() {
   // 获取到id问卷的data数据后去设置redux
   useEffect(() => {
     if (!data) return
-    const { title, componentList = [] } = data as any
+    const { title, componentList = [], desc = '', css = '', js = '' } = data as any
     // 默认选中第一项
     dispatch(
       resetComponents({
@@ -31,6 +32,7 @@ function useLoadingQuestionData() {
         copyComponent: null,
       })
     )
+    dispatch(resetPageInfo({ title, desc, css, js }))
   }, [data])
   useEffect(() => {
     run(id)

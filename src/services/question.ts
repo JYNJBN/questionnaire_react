@@ -25,7 +25,7 @@ export async function getQuestionListApi(opt: Partial<SearchOption>): Promise<Re
 }
 export async function updateQuestionApi(
   id: string,
-  opt: Partial<SearchOption>
+  opt: { [key: string]: any }
 ): Promise<ResDataType> {
   const url = `/question/${id}`
   const data = await axios.patch<ResDataType>(url, { params: opt })

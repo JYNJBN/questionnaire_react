@@ -1,6 +1,6 @@
 import { QuestionInputDefaultProps } from './Interface'
 import { PropComponent } from './PropComponent'
-import { QuestionInput } from './QuestionInput'
+import { QuestionInput } from './Component'
 
 export * from './Interface'
 export default {

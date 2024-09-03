@@ -3,6 +3,7 @@ import { ComponentsPropsType } from './../../components/QuestionComponents/index
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
 import { getNextSelectedId, insertNewComponent } from './utils'
 import _ from 'lodash'
+import { arrayMove } from '@dnd-kit/sortable'
 export type ComponentInfoType = {
   fe_id: string
   type: string
@@ -58,7 +59,7 @@ export const componentsSlice = createSlice({
         }
       }
     ),
-    // 删除组件
+    // 删除组
     removeSelectedComponent: produce((draft: ComponentsStateType) => {
       // 这里不用额外传递选中的id
       const { componentList = [], currentSelectedId: removedId } = draft
@@ -133,6 +134,26 @@ export const componentsSlice = createSlice({
       if (currentSelectedIndex === componentList.length - 1) return
       draft.currentSelectedId = componentList[currentSelectedIndex + 1].fe_id
     }),
+    // 修改组件标题
+    changeComponentTitle: produce(
+      (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string; title: string }>) => {
+        const { title, fe_id } = action.payload
+        const curComp = draft.componentList.find(c => c.fe_id === fe_id)
+        if (curComp) curComp.title = title
+      }
+    ),
+    // 移动组件位置
+    moveComponent: produce(
+      (
+        draft: ComponentsStateType,
+        action: PayloadAction<{ oldIndex: number; newIndex: number }>
+      ) => {
+        const { componentList: curComponentList } = draft
+        const { oldIndex, newIndex } = action.payload
+
+        draft.componentList = arrayMove(curComponentList, oldIndex, newIndex)
+      }
+    ),
   },
 })
 
@@ -148,5 +169,7 @@ export const {
   pasteCopiedComponent,
   selectPrevComponent,
   selectNextComponent,
+  changeComponentTitle,
+  moveComponent,
 } = componentsSlice.actions
 export default componentsSlice.reducer

@@ -20,7 +20,7 @@ function getComponent(c: ComponentConfType) {
     )
   }
   return (
-    <div className={styles.wrapper} onClick={handleClick}>
+    <div key={nanoid()} className={styles.wrapper} onClick={handleClick}>
       <div className={styles.component}>
         <Component />
       </div>
@@ -36,7 +36,7 @@ export const ComponentLib: FC = () => {
         console.log(groupId)
 
         return (
-          <div key={groupId}>
+          <div key={groupId + nanoid()}>
             <Title level={3} style={{ fontSize: '16px' }}>
               {groupName}
               <div>{components.map(c => getComponent(c))}</div>

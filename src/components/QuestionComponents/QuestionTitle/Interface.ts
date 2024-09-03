@@ -3,6 +3,7 @@ export type QuestionTitlePropsType = {
   level?: 1 | 2 | 3 | 4 | 5
   isCenter?: boolean
   disable?: boolean
+  // onChange是给属性组件使用的去修改属性
   onChange?: (newProps: Partial<QuestionTitlePropsType>) => void
 }
 export const QuestionTitleDefaultProps: QuestionTitlePropsType = {

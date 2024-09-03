@@ -3,7 +3,7 @@ import { StateType } from '../store'
 import { ComponentsStateType } from '../store/componentsReducer'
 
 // 定义一个回去Reduce里的ComponentList的方法
-function getComponentInfo() {
+function useGetComponentInfo() {
   const components = useSelector<StateType>(state => state.components) as ComponentsStateType
   console.log('🚀 ~ getComponentInfo ~ components:', components)
   const selectedComponent = components.componentList.find(
@@ -13,4 +13,4 @@ function getComponentInfo() {
   return { componentList, currentSelectedId, selectedComponent, copyComponent }
 }
 
-export default getComponentInfo
+export default useGetComponentInfo

@@ -1,5 +1,5 @@
 import React from 'react'
-import getComponentInfo from '../../../hooks/useGetComponentInfo'
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { ComponentsPropsType, getComponentConfByType } from '../../../components/QuestionComponents'
 import { useDispatch } from 'react-redux'
 import { changeComponentProps } from '../../../store/componentsReducer'
@@ -14,7 +14,7 @@ export const ComponentProp = () => {
     console.log(newProps)
     dispatch(changeComponentProps({ fe_id, newProps }))
   }
-  const { selectedComponent } = getComponentInfo()
+  const { selectedComponent } = useGetComponentInfo()
   if (selectedComponent == null) return <NoProp />
   const { type, props, fe_id, isLocked } = selectedComponent
   const componentConf = getComponentConfByType(type)

@@ -1,4 +1,4 @@
-import { QuestionTitle } from './QuestionTitle'
+import { QuestionTitle } from './Component'
 import { QuestionTitleDefaultProps } from './Interface'
 import { PropComponent } from './PropComponent'
 

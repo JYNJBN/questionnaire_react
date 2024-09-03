@@ -10,12 +10,8 @@ import {
 
 function isActiveElementValid() {
   const activeElement = document.activeElement
-  console.log('🚀 ~ isActiveElementValid ~ activeElement:', activeElement)
-  console.log('🚀 ~ isActiveElementValid ~ activeElement:', activeElement?.className)
-
   if (activeElement === document.body) return true
   if (activeElement?.matches('div[role="button"]')) return true
-
   return false
 }
 const useBindCanvasKeyPress = () => {
