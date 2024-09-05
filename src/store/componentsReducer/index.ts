@@ -17,6 +17,7 @@ export type ComponentsStateType = {
   currentSelectedId: string
   // 用来存储复制组件
   copyComponent?: ComponentInfoType | null
+  isPublished?: boolean
 }
 const INIT_STATE: ComponentsStateType = {
   componentList: [],

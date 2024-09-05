@@ -1,4 +1,4 @@
-import { Button, Input, Space, Typography } from 'antd'
+import { Button, Input, message, Space, Typography } from 'antd'
 import React, { ChangeEvent, FC, useState } from 'react'
 import styles from './EditHeader.module.scss'
 import { LeftOutlined } from '@ant-design/icons'
@@ -78,13 +78,20 @@ const SaveButton: FC = () => {
 // 发布
 const PublishButton: FC = () => {
   const { id } = useParams()
+  const nav = useNavigate()
   const { componentList } = useGetComponentInfo()
   const pageInfo = useGetPageInfo()
   const { loading, run: pub } = useRequest(
     async () => {
       await updateQuestionApi(id as string, { ...pageInfo, componentList, isPublished: true })
     },
-    { manual: true }
+    {
+      manual: true,
+      onSuccess: () => {
+        message.success('发布成功')
+        nav('/question/stat/' + id)
+      },
+    }
   )
   return (
     <Button loading={loading} onClick={pub}>

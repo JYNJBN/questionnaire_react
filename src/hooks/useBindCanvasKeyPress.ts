@@ -7,6 +7,7 @@ import {
   selectNextComponent,
   selectPrevComponent,
 } from '../store/componentsReducer'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 function isActiveElementValid() {
   const activeElement = document.activeElement
@@ -42,6 +43,23 @@ const useBindCanvasKeyPress = () => {
     if (isActiveElementValid()) {
       disPatch(selectNextComponent())
     }
+  })
+  // 撤销
+  useKeyPress(
+    ['ctrl.z', 'meta.z'],
+    () => {
+      if (!isActiveElementValid()) return
+      disPatch(UndoActionCreators.undo())
+    },
+    {
+      exactMatch: true, // 严格匹配
+    }
+  )
+
+  // 重做
+  useKeyPress(['ctrl.shift.z', 'meta.shift.z'], () => {
+    if (!isActiveElementValid()) return
+    disPatch(UndoActionCreators.redo())
   })
 }
 

@@ -11,6 +11,9 @@
         "Formik",
         "immer",
         "mockjs",
+        "qrcode",
+        "reduxjs",
+        "undoable",
         "uparrow"
     ]
 }

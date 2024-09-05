@@ -1,4 +1,5 @@
 export type QuestionParagraphPropsType = {
+  title?: string
   text?: string
   isCenter?: boolean
   disable?: boolean

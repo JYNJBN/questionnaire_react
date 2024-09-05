@@ -21,6 +21,7 @@ import {
   toggleComponentLocked,
 } from '../../../store/componentsReducer'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 
 export const EditToolbar = () => {
   const dispatch = useDispatch()
@@ -55,6 +56,15 @@ export const EditToolbar = () => {
   function moveDown() {
     if (isLast) return
     dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
+  }
+  // 撤销
+  function undo() {
+    dispatch(UndoActionCreators.undo())
+  }
+
+  // 重做
+  function redo() {
+    dispatch(UndoActionCreators.redo())
   }
   return (
     <Space>
@@ -93,6 +103,12 @@ export const EditToolbar = () => {
           onClick={moveDown}
           disabled={isLast}
         ></Button>
+      </Tooltip>
+      <Tooltip title="撤销">
+        <Button shape="circle" icon={<UndoOutlined />} onClick={undo}></Button>
+      </Tooltip>
+      <Tooltip title="重做">
+        <Button shape="circle" icon={<RedoOutlined />} onClick={redo}></Button>
       </Tooltip>
     </Space>
   )
