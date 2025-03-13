@@ -30,10 +30,12 @@ export const componentsSlice = createSlice({
   initialState: INIT_STATE,
   reducers: {
     resetComponents(state: ComponentsStateType, action: PayloadAction<ComponentsStateType>) {
+      console.log(action, 'action')
       return action.payload
     },
     // 修改 selectedId
     setCurrentSelectedId: produce((draft: ComponentsStateType, action: PayloadAction<string>) => {
+      console.log(draft, 'draft')
       draft.currentSelectedId = action.payload
     }),
     // setCurrentSelectedId(state: ComponentsStateType, action: PayloadAction<string>) {
@@ -52,6 +54,7 @@ export const componentsSlice = createSlice({
         draft: ComponentsStateType,
         action: PayloadAction<{ fe_id: string; newProps: Partial<ComponentsPropsType> }>
       ) => {
+        console.log(componentsSlice.getInitialState(), 'componentsSlice')
         const { fe_id, newProps } = action.payload
         const { componentList } = draft
         const component = componentList.find(c => c.fe_id === fe_id)

@@ -8,7 +8,7 @@ export type QuestionTitlePropsType = {
   onChange?: (newProps: Partial<QuestionTitlePropsType>) => void
 }
 export const QuestionTitleDefaultProps: QuestionTitlePropsType = {
-  text: '标题',
+  text: '标题', 
   level: 1,
   isCenter: false,
-}
+} 

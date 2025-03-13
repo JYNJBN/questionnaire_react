@@ -44,6 +44,8 @@ export default function Login() {
       onSuccess(result) {
         const { token = '' } = result
         setToken(token) // 存储 token
+        console.log(token,'token')
+
         message.success('登录成功')
         nav(MANAGE_LIST_URL) // 导航到“我的问卷”
       },
