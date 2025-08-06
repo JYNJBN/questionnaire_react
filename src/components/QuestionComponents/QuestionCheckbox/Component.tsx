@@ -4,6 +4,8 @@ import { Checkbox, Space, Typography } from 'antd'
 
 const { Paragraph } = Typography
 export const QuestionCheckbox: FC<QuestionCheckboxPropsType> = props => {
+  console.log(1)
+
   const { title, list = [], isVertical } = { ...QuestionCheckboxDefaultProps, ...props }
   return (
     <Paragraph>

@@ -8,7 +8,8 @@ import { MANAGE_LIST_URL, REGISTER_URL } from '../constant/routerConstant'
 import { useRequest } from 'ahooks'
 import { loginApi } from '../services/user'
 import { setToken } from '../utils/user-token'
-
+import { useDispatch } from 'react-redux'
+import { loginReducer } from '../store/userReducer'
 export default function Login() {
   const nav = useNavigate()
   const [form] = Form.useForm()
@@ -16,7 +17,7 @@ export default function Login() {
     const { username, password } = getUserFromStorage()
     form.setFieldsValue({ username, password })
   }, [])
-
+  const dispatch = useDispatch()
   const { Title } = Typography
   const USERNAME_KEY = 'USERNAME'
   const PASSWORD_KEY = 'PASSWORD'
@@ -42,8 +43,9 @@ export default function Login() {
     {
       manual: true,
       onSuccess(result) {
-        const { token = '' } = result
+        const { token = '', username = '张三', nickname = '张三' } = result
         setToken(token) // 存储 token
+        dispatch(loginReducer({ username, nickname }))
         message.success('登录成功')
         nav(MANAGE_LIST_URL) // 导航到“我的问卷”
       },

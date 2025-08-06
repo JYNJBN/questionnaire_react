@@ -23,8 +23,8 @@ const UserInfo: FC = () => {
   const { username, nickname } = useGetUserInfo() // 从 redux 中获取用户信息
 
   function logout() {
-    dispatch(logoutReducer()) // 清空了 redux user 数据
-    removeToken() // 清除 token 的存储
+    removeToken() // 先清除 token
+    dispatch(logoutReducer()) // 再清空 redux user 数据
     message.success('退出成功')
     nav(LOGIN_URL)
   }
