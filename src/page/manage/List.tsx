@@ -30,6 +30,7 @@ export default function List() {
       manual: true,
       onSuccess(result: any) {
         const { list: l = [], total = 0 } = result
+        console.log('l', l);
         setList(list.concat(l)) // 累计
         setTotal(total)
         setPage(page + 1)

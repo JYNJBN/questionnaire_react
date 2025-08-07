@@ -11,7 +11,7 @@ function NoProp() {
 export const ComponentProp = () => {
   const dispatch = useDispatch()
   function onChange(newProps: Partial<ComponentsPropsType>) {
-    console.log(newProps)
+    console.log(newProps, fe_id)
     dispatch(changeComponentProps({ fe_id, newProps }))
   }
   const { selectedComponent } = useGetComponentInfo()

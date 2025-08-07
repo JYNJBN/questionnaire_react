@@ -23,6 +23,7 @@ function useLoadingQuestionData() {
   // 获取到id问卷的data数据后去设置redux
   useEffect(() => {
     if (!data) return
+    console.log(data, 'data')
     const { title, componentList = [], desc = '', css = '', js = '', isPublished } = data as any
     // 默认选中第一项
     dispatch(
